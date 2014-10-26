@@ -25,6 +25,12 @@ public class DisplayingTheEtsyHomePageTest {
         assertThat(trendingTitle).isEqualTo("Recent Favourites");
     }
 
+    @Test
+    public void whenWeSearchForShoesItshouldDisplayResultsAboutShoes() {
+        driver.findElement(By.id("search-query")).sendKeys("shoes");
+        driver.findElement(By.id("gnav-search")).findElement(By.tagName("button")).click();
+    }
+    
     @After
     public void closeDriver() {
         driver.quit();
