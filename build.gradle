@@ -6,12 +6,18 @@ repositories {
     jcenter()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.5'
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.seleniumhq.selenium:selenium-server:2.43.1'
+    testCompile 'com.github.detro:phantomjsdriver:1.2.0'
+    testCompile 'pl.pragmatists:JUnitParams:1.0.3'
+    testCompile 'com.opencsv:opencsv:3.1'
 }
 
 task wrapper(type: Wrapper) {
