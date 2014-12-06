@@ -3,6 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 repositories {
+    mavenLocal()
     jcenter()
 }
 
@@ -14,8 +15,8 @@ dependencies {
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.assertj:assertj-core:1.7.0'
-    testCompile 'org.seleniumhq.selenium:selenium-server:2.43.1'
-    testCompile 'com.github.detro:phantomjsdriver:1.2.0'
+    testCompile 'net.serenity-bdd:core:1.0.14'
+    testCompile 'net.serenity-bdd:serenity-junit:1.0.14'
     testCompile 'pl.pragmatists:JUnitParams:1.0.3'
     testCompile 'com.opencsv:opencsv:3.1'
 }

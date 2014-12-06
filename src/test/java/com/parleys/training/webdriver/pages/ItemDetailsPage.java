@@ -1,5 +1,6 @@
 package com.parleys.training.webdriver.pages;
 
+import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,7 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Created by john on 18/11/14.
  */
-public class ItemDetailsPage {
+public class ItemDetailsPage extends PageObject {
 
     @FindBys({@FindBy(id="listing-page-cart"), @FindBy(tagName = "h1")})
     WebElement itemName;
@@ -25,23 +26,17 @@ public class ItemDetailsPage {
     @FindBy(id="description")
     WebElement descriptionTab;
 
-    private final WebDriver driver;
-
-    public ItemDetailsPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public String getItemName() {
         return itemName.getText();
     }
 
     public void addToCart() {
-        Actions actions = new Actions(driver);
+        Actions actions = new Actions(getDriver());
         actions.moveToElement(descriptionTab).perform();
 
         addToCartButton.click();
 
-        Wait wait = new WebDriverWait(driver, 5);
+        Wait wait = new WebDriverWait(getDriver(), 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".checkout-action")));
     }
 }

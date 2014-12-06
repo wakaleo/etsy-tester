@@ -2,6 +2,8 @@ package com.parleys.training.webdriver.pages;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import net.thucydides.core.pages.PageObject;
+import net.thucydides.core.webelements.RadioButtonGroup;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,10 +21,12 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+
 /**
  * Created by john on 23/11/14.
  */
-public class RegisterPage {
+public class RegisterPage extends PageObject {
 
     @FindBy(id="first-name")
     WebElement firstName;
@@ -43,15 +47,8 @@ public class RegisterPage {
     @FindBy(id="facebook-register")
     WebElement registerUsingFacebook;
 
-    private final WebDriver driver;
-
-    public RegisterPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public void waitForRegistrationPanel() {
-        Wait wait = new WebDriverWait(driver, 1);
-        wait.until(ExpectedConditions.visibilityOf(firstName));
+        waitFor(visibilityOf(firstName));
     }
 
     public void setFirstName(String value) {
@@ -63,22 +60,16 @@ public class RegisterPage {
     }
 
     public void setGender(String value) {
-        for(WebElement genderRadioButton : genderButtons) {
-            if (genderRadioButton.getAttribute("value").equals(value)) {
-                genderRadioButton.click();
-                break;
-            }
-        }
+        inRadioButtonGroup("gender").selectByValue(value);
     }
 
     public void register() {
-        Wait wait = new WebDriverWait(driver,5);
+        Wait wait = new WebDriverWait(getDriver(),5);
         wait.until(ExpectedConditions.elementToBeClickable(registerButton));
         registerButton.click();
     }
 
     public List<String> getErrorMessages() {
-
         return errorMessages.stream()
                 .map(element -> element.getText())
                 .collect(Collectors.toList());

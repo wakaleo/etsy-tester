@@ -3,6 +3,8 @@ package com.parleys.training.webdriver.pages;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.thoughtworks.selenium.webdriven.commands.WaitForCondition;
+import net.thucydides.core.annotations.DefaultUrl;
+import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -19,12 +21,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by john on 18/11/14.
- */
-public class HomePage {
-
-    WebDriver driver;
+@DefaultUrl("http://www.etsy.com")
+public class HomePage extends PageObject {
 
     @CacheLookup
     @FindBy(id="search-query")
@@ -43,10 +41,6 @@ public class HomePage {
 
     @FindAll({@FindBy(css=".trust1 h3"), @FindBy(css=".trust2 h3"), @FindBy(css=".trust3 h3")})
     List<WebElement> trustArguments;
-
-    public HomePage(WebDriver driver) {
-        this.driver = driver;
-    }
 
     public void searchFor(String keywords) {
         searchQuery.sendKeys(keywords);
@@ -79,7 +73,7 @@ public class HomePage {
 
             @Override
             public Boolean apply(WebDriver input) {
-                return !driver.findElements(By.cssSelector(".browse-nav li")).isEmpty();
+                return !getDriver().findElements(By.cssSelector(".browse-nav li")).isEmpty();
             }
         };
     }

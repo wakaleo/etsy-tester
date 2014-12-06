@@ -1,13 +1,12 @@
 package com.parleys.training.webdriver.pages;
 
-import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.google.common.base.Function;
+import net.thucydides.core.pages.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.FluentWait;
 
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
@@ -15,41 +14,17 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by john on 18/11/14.
  */
-public class ShoppingCartPage {
-
-    @FindBys({@FindBy(id = "listing-page-cart"), @FindBy(tagName = "h1")})
-    WebElement itemName;
-
-    @FindBy(css = ".add-to-cart-form .btn-transaction")
-    WebElement addToCartButton;
+public class ShoppingCartPage extends PageObject {
 
     @FindBy(css = ".shipping .currency-value")
     WebElement shippingCost;
 
-    @FindBy(css = ".shipping-destination")
-    WebElement shippingDestination;
-
-    @FindBy(css = ".estimate-shipping")
-    WebElement estimateShippingButton;
-
-    @FindBy(css = ".estimate-shipping-submit")
-    WebElement estimateShippingSubmitButton;
-
-    @FindBy(id="estimate-country")
-    WebElement destinationCountryList;
-
-    private final WebDriver driver;
-
-    public ShoppingCartPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public String getItemName() {
-        return itemName.getText();
+        return $(".listing-page-cart h1").getText();
     }
 
     public void addToCart() {
-        addToCartButton.click();
+        $(".add-to-cart-form").then(".btn-transaction").click();
     }
 
     public BigDecimal getShippingCost() {
@@ -57,15 +32,13 @@ public class ShoppingCartPage {
     }
 
     public void shipTo(String destination) {
-        estimateShippingButton.click();
+        $(".estimate-shipping").click();
 
-        Wait wait = new WebDriverWait(driver,5);
-        wait.until(ExpectedConditions.visibilityOf(destinationCountryList));
-        new Select(destinationCountryList).selectByVisibleText(destination);
+        $("#estimate-country").selectByVisibleText(destination);
 
-        estimateShippingSubmitButton.click();
+        $(".estimate-shipping-submit").click();
 
-        new FluentWait(driver).pollingEvery(500, TimeUnit.MILLISECONDS)
+        new FluentWait(getDriver()).pollingEvery(500, TimeUnit.MILLISECONDS)
                 .withTimeout(5, TimeUnit.SECONDS)
                 .withMessage("Waiting for the spinner to disappear")
                 .until(newPriceIsDisplayed());
@@ -83,6 +56,6 @@ public class ShoppingCartPage {
     }
 
     public String getShippingDestination() {
-        return shippingDestination.getText();
+        return $(".shipping-destination").getText();
     }
 }
