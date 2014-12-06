@@ -13,7 +13,11 @@ import java.util.List;
  */
 public class SearchResultsPage extends PageObject {
 
+    @FindBy(css=".listing-card")
+    List<WebElement> listingCards;
+
     public void selectItem(int itemNumber) {
-        findAll(".listing-card").get(itemNumber - 1).then("a").click();
+        listingCards.get(itemNumber - 1)
+                     .findElement(By.tagName("a")).click();
     }
 }

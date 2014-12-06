@@ -2,9 +2,12 @@ package com.parleys.training.webdriver.search;
 
 import com.parleys.training.webdriver.pages.HomePage;
 import com.parleys.training.webdriver.pages.RegisterPage;
+import net.thucydides.core.annotations.Managed;
+import net.thucydides.junit.runners.SerenityRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -13,28 +16,24 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(SerenityRunner.class)
 public class WhenRegisteringTest {
 
+    @Managed
     WebDriver driver;
+
+    HomePage homePage;
+    RegisterPage registerPage;
 
     @Before
     public void openEtsyHomePage() {
-        driver = new FirefoxDriver();
-        driver.get("http://www.etsy.com");
-    }
-
-    @After
-    public void closeDriver() {
-        driver.quit();
+        homePage.open();
     }
 
     @Test
     public void mustEnterEmailAndPassword() {
 
-        HomePage homePage = PageFactory.initElements(driver, HomePage.class);
         homePage.register();
-
-        RegisterPage registerPage = PageFactory.initElements(driver, RegisterPage.class);
         registerPage.waitForRegistrationPanel();
         registerPage.setFirstName("John");
         registerPage.setLastName("Smart");
@@ -45,11 +44,7 @@ public class WhenRegisteringTest {
 
     @Test
     public void shouldBeAbleToRegisterUsingFacebook() {
-
-        HomePage homePage = PageFactory.initElements(driver, HomePage.class);
         homePage.register();
-
-        RegisterPage registerPage = PageFactory.initElements(driver, RegisterPage.class);
         registerPage.waitForRegistrationPanel();
     }
 

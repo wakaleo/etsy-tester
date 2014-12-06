@@ -48,7 +48,7 @@ public class RegisterPage extends PageObject {
     WebElement registerUsingFacebook;
 
     public void waitForRegistrationPanel() {
-        waitFor(visibilityOf(firstName));
+        waitFor("#register_button");
     }
 
     public void setFirstName(String value) {
@@ -64,13 +64,12 @@ public class RegisterPage extends PageObject {
     }
 
     public void register() {
-        Wait wait = new WebDriverWait(getDriver(),5);
-        wait.until(ExpectedConditions.elementToBeClickable(registerButton));
         registerButton.click();
     }
 
     public List<String> getErrorMessages() {
-        return errorMessages.stream()
+        return getDriver().findElements(By.cssSelector(".inline-input-error-message"))
+                .stream()
                 .map(element -> element.getText())
                 .collect(Collectors.toList());
     }
